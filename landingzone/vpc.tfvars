@@ -1,4 +1,8 @@
-cidr                    = "10.0.0.0/16"
+
+vpc_name                = "eks-vpc"
+cluster_name            = "eks-cluster"
+region                  = "us-east-2"
+vpc_cidr                = "10.0.0.0/16"
 secondary_cidr_blocks   = ["10.1.0.0/16", "10.2.0.0/16"]
 private_subnets         = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 public_subnets          = ["10.0.11.0/24", "10.0.12.0/24", "10.0.13.0/24"]
@@ -7,12 +11,12 @@ elasticache_subnets     = ["10.0.31.0/24", "10.0.32.0/24", "10.0.33.0/24"]
 redshift_subnets        = ["10.0.41.0/24", "10.0.42.0/24", "10.0.43.0/24"]
 intra_subnets           = ["10.0.51.0/24", "10.0.52.0/24", "10.0.53.0/24"]
 
-private_subnet_names = ["Private Subnet One", "Private Subnet Two", "Private Subnet Three"]
+private_subnet_names = ["Private-Subnet-01", "Private-Subnet-02", "Private-Subnet-03"]
 # public_subnet_names omitted to show default name generation for all three subnets
-database_subnet_names    = ["DB Subnet One", "DB Subnet Two", "DB Subnet Three"]
-elasticache_subnet_names = ["Elasticache Subnet One", "Elasticache Subnet Two", "Elasticache Subnet Three"]
-redshift_subnet_names    = ["Redshift Subnet One", "Redshift Subnet Two", "Redshift Subnet Three"]
-intra_subnet_names       = ["Infra Subnet One", "Infra Subnet Two", "Infra Subnet Three"]
+database_subnet_names    = ["DB-Subnet-01", "DB-Subnet-02", "DB-Subnet-03"]
+elasticache_subnet_names = ["Elasticache-Subnet-01", "Elasticache-Subnet-02", "Elasticache-Subnet-03"]
+redshift_subnet_names    = ["Redshift-Subnet-01", "Redshift-Subnet-02", "Redshift-Subnet-03"]
+intra_subnet_names       = ["Infra-Subnet-01", "Infra-Subnet-03", "Infra-Subnet-03"]
 
 create_database_subnet_group = true
 
@@ -33,4 +37,16 @@ enable_flow_log = true
 create_flow_log_cloudwatch_log_group = true
 create_flow_log_cloudwatch_iam_role  = true
 flow_log_max_aggregation_interval    = 60
+
+tags = {
+  project       = "eks-lab"
+  poc           = "Jil"
+  poc-email     = "email@email.com"
+}
+
+vpc_tags = {
+  project       = "eks-lab"
+  poc           = "Jil"
+  poc-email     = "email@email.com"
+}
 

@@ -1,5 +1,5 @@
 provider "aws" {
-  region = local.region
+  region = var.region
 }
 
 locals {
@@ -22,8 +22,8 @@ locals {
 module "vpc" {
   source = "./modules/vpc"
 
-  name = local.name
-  cidr = var.cidr #"10.0.0.0/16"
+  name = var.vpc_name
+  cidr = var.vpc_cidr #"10.0.0.0/16"
   secondary_cidr_blocks = var.secondary_cidr_blocks #["10.1.0.0/16", "10.2.0.0/16"]
 
   azs                 = ["${local.region}a", "${local.region}b", "${local.region}c"]
@@ -34,14 +34,26 @@ module "vpc" {
   redshift_subnets    = var.redshift_subnets #["10.0.41.0/24", "10.0.42.0/24", "10.0.43.0/24"]
   intra_subnets       = var.intra_subnets #["10.0.51.0/24", "10.0.52.0/24", "10.0.53.0/24"]
 
-  private_subnet_names = ["Private Subnet One", "Private Subnet Two"]
+  private_subnet_names = var.private_subnet_names
   # public_subnet_names omitted to show default name generation for all three subnets
-  database_subnet_names    = ["DB Subnet One"]
-  elasticache_subnet_names = ["Elasticache Subnet One", "Elasticache Subnet Two"]
-  redshift_subnet_names    = ["Redshift Subnet One", "Redshift Subnet Two", "Redshift Subnet Three"]
-  intra_subnet_names       = []
+  database_subnet_names    = var.database_subnet_names
+  elasticache_subnet_names = var.elasticache_subnet_names
+  redshift_subnet_names    = var.redshift_subnet_names
+  intra_subnet_names       = var.intra_subnet_names
 
   create_database_subnet_group = var.create_database_subnet_group
+  database_subnet_group_name   = var.database_subnet_group_name
+
+  public_subnet_tags = {
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    "kubernetes.io/role/elb"                    = 1
+  }
+
+  private_subnet_tags = {
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    "kubernetes.io/role/internal-elb"                    = 1
+  } 
+
 
   # manage_default_network_acl = true
   # default_network_acl_tags   = { Name = "${local.name}-default" }
@@ -82,14 +94,14 @@ module "vpc" {
   create_flow_log_cloudwatch_iam_role  = var.create_flow_log_cloudwatch_iam_role #true
   flow_log_max_aggregation_interval    = var.flow_log_max_aggregation_interval #60
 
-  tags = local.tags
+  tags = var.tags
 }
 
 ################################################################################
 # VPC Endpoints Module
 ################################################################################
 
-module "vpc_endpoints" {
+/*module "vpc_endpoints" {
   source = "./modules/vpc-endpoints"
 
   vpc_id             = module.vpc.vpc_id
@@ -185,7 +197,7 @@ module "vpc_endpoints_nocreate" {
   source = "./modules/vpc-endpoints"
 
   create = false
-}
+}*/
 
 ################################################################################
 # Supporting Resources
@@ -249,5 +261,5 @@ resource "aws_security_group" "vpc_tls" {
     cidr_blocks = [module.vpc.vpc_cidr_block]
   }
 
-  tags = local.tags
+  tags = var.vpc_tags
 }

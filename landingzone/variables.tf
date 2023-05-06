@@ -4,13 +4,24 @@ variable "create_vpc" {
   default     = true
 }
 
+variable "vpc_name" {
+  description = "Name of the vpc to be created for eks"
+  type = string
+}
+
+variable "cluster_name" {
+  type = string
+  description = "Name of eks cluster to be created"
+  
+}
+
 variable "name" {
   description = "Name to be used on all the resources as identifier"
   type        = string
   default     = ""
 }
 
-variable "cidr" {
+variable "vpc_cidr" {
   description = "(Optional) The IPv4 CIDR block for the VPC. CIDR can be explicitly set or it can be derived from IPAM using `ipv4_netmask_length` & `ipv4_ipam_pool_id`"
   type        = string
   default     = "0.0.0.0/0"
@@ -705,6 +716,11 @@ variable "create_database_subnet_group" {
     description = "Use to create db subnet group or not"
     default = true
 }
+
+# variable "database_subnet_group_name" {
+#   type = string
+#   description = "Name of rds database subname group name"
+# }
 
 variable "private_dns_enabled" {
     type = bool
