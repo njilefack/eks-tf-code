@@ -23,22 +23,23 @@ module "vpc" {
   source = "./modules/vpc"
 
   name = var.vpc_name
-  cidr = var.vpc_cidr #"10.0.0.0/16"
-  secondary_cidr_blocks = var.secondary_cidr_blocks #["10.1.0.0/16", "10.2.0.0/16"]
+  cidr = var.vpc_cidr
+  #secondary_cidr_blocks = var.secondary_cidr_blocks
 
   azs                 = ["${local.region}a", "${local.region}b", "${local.region}c"]
-  private_subnets     = var.private_subnets #["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-  public_subnets      = var.public_subnets #["10.0.11.0/24", "10.0.12.0/24", "10.0.13.0/24"]
-  database_subnets    = var.database_subnets #["10.0.21.0/24", "10.0.22.0/24", "10.0.23.0/24"]
-  elasticache_subnets = var.elasticache_subnets #["10.0.31.0/24", "10.0.32.0/24", "10.0.33.0/24"]
-  redshift_subnets    = var.redshift_subnets #["10.0.41.0/24", "10.0.42.0/24", "10.0.43.0/24"]
-  intra_subnets       = var.intra_subnets #["10.0.51.0/24", "10.0.52.0/24", "10.0.53.0/24"]
+  private_subnets     = var.private_subnets
+  public_subnets      = var.public_subnets 
+  database_subnets    = var.database_subnets
+  intra_subnets       = var.intra_subnets
+  # elasticache_subnets = var.elasticache_subnets
+  # redshift_subnets    = var.redshift_subnets
+
 
   private_subnet_names = var.private_subnet_names
   # public_subnet_names omitted to show default name generation for all three subnets
   database_subnet_names    = var.database_subnet_names
-  elasticache_subnet_names = var.elasticache_subnet_names
-  redshift_subnet_names    = var.redshift_subnet_names
+  # elasticache_subnet_names = var.elasticache_subnet_names
+  # redshift_subnet_names    = var.redshift_subnet_names
   intra_subnet_names       = var.intra_subnet_names
 
   create_database_subnet_group = var.create_database_subnet_group
@@ -65,10 +66,11 @@ module "vpc" {
   # default_security_group_tags   = { Name = "${local.name}-default" }
 
   enable_dns_hostnames = var.enable_dns_hostnames #true
-  enable_dns_support   = var.enable_dns_support #true
-
   enable_nat_gateway = var.enable_nat_gateway #true
   single_nat_gateway = var.single_nat_gateway #true
+  #enable_dns_support   = var.enable_dns_support #true
+
+
 
   # customer_gateways = {
   #   IP1 = {
@@ -82,11 +84,11 @@ module "vpc" {
   #   }
   # }
 
-  enable_vpn_gateway = var.enable_vpn_gateway #true
+  #enable_vpn_gateway = var.enable_vpn_gateway #true
 
-  enable_dhcp_options              = var.enable_dhcp_options #true
-  dhcp_options_domain_name         = var.dhcp_options_domain_name #"service.consul"
-  dhcp_options_domain_name_servers = var.dhcp_options_domain_name_servers #["127.0.0.1", "10.10.0.2"]
+  #enable_dhcp_options              = var.enable_dhcp_options #true
+  #dhcp_options_domain_name         = var.dhcp_options_domain_name #"service.consul"
+  #dhcp_options_domain_name_servers = var.dhcp_options_domain_name_servers #["127.0.0.1", "10.10.0.2"]
 
   # VPC Flow Logs (Cloudwatch log group and IAM role will be created)
   enable_flow_log                      = var.enable_flow_log #true
@@ -203,7 +205,7 @@ module "vpc_endpoints_nocreate" {
 # Supporting Resources
 ################################################################################
 
-data "aws_security_group" "default" {
+/*data "aws_security_group" "default" {
   name   = "default"
   vpc_id = module.vpc.vpc_id
 }
@@ -262,4 +264,4 @@ resource "aws_security_group" "vpc_tls" {
   }
 
   tags = var.vpc_tags
-}
+}*/
