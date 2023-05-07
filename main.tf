@@ -32,7 +32,7 @@ locals {
 ################################################################################
 
 module "eks" {
-  source = "./terraform-aws-eks"
+  source = "./terraform-aws-eks-code"
 
   cluster_version = var.cluster_version
   cluster_name                   = var.cluster_name
@@ -167,7 +167,7 @@ resource "aws_security_group_rule" "cluster" {
   protocol = "tcp"
   from_port = 443
   to_port = 443
-  source_security_group_id = "sg-0c41cba9ad960d114"
+  source_security_group_id = "sg-01a03e324dfa140c6" ## bastion sg
 }
 
 ################################################################################
